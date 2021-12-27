@@ -1,16 +1,8 @@
-﻿var items = CSharpDay2.Resources.Input.Split('\n');
-int horizontal = 0;
-int vertical = 0;
-foreach (var item in items)
-{
-    if (item.StartsWith("forward"))
-        horizontal += int.Parse(item.Split(' ')[1]);
-    if (item.StartsWith("down"))
-        vertical += int.Parse(item.Split(' ')[1]);
-    if (item.StartsWith("up"))
-        vertical -= int.Parse(item.Split(' ')[1]);
-    //Console.WriteLine($"Horizontal: {horizontal}, Vertical: {vertical}, Multiplied: {horizontal * vertical}");
-    //Console.ReadLine();
-}
+﻿using CSharpDay2;
 
-Console.WriteLine($"Horizontal: {horizontal}, Vertical: {vertical}, Multiplied: {horizontal * vertical}");
+var items = CSharpDay2.Resources.Input.Split('\n');
+Console.WriteLine("Advent of Code day 1");
+Console.WriteLine("Part1");
+Parts.Part1(items);
+Console.WriteLine("Part2");
+Parts.Part2(items);

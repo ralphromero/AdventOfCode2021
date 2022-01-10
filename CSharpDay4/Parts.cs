@@ -64,6 +64,60 @@
         Console.WriteLine("Score of winning board: " + result);
     }
 
+    internal void Part2()
+    {
+        (int highestMax, string[] currentBoard) = (int.MinValue, null);
+        foreach (var board in Boards)
+        {
+            int boardMin = int.MaxValue;
+            var boardArray = new int[5, 5];
+            for (int i = 0; i < boardArray.GetLength(0); i++)
+            {
+                var b = SplitBoardItem(board[i]);
+                for (int j = 0; j < b.Length; j++)
+                {
+                    boardArray[i, j] = b[j];
+                }
+            }
+            //verticals
+            var vertSequence = new int[5];
+            for (int i = 0; i < boardArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < vertSequence.Length; j++)
+                {
+                    vertSequence[j] = boardArray[j, i];
+                }
+                var max = EvaluateMax(vertSequence);
+                if (max != null && max < boardMin)
+                {
+                    boardMin = (int)max;
+                }
+            }
+            //horizontals
+            for (int i = 0; i < board.Length; i++)
+            {
+                var b = SplitBoardItem(board[i]);
+                var max = EvaluateMax(b);
+                if (max != null && max < boardMin)
+                {
+                    boardMin = (int)max;
+                }
+            }
+            if (boardMin > highestMax)
+            {
+                highestMax = boardMin;
+                currentBoard = board;
+            }
+        }
+        Console.WriteLine("Current Board");
+        for (int i = 0; i < 5; i++)
+        {
+            Console.WriteLine(currentBoard[i]);
+        }
+        int result = ScoreBoard(highestMax, currentBoard);
+        Console.WriteLine("Score of winning board: " + result);
+    }
+
     private static int[] SplitBoardItem(string line)
     {
         string[] temp = { line.Substring(0,2), line.Substring(3,2), line.Substring(6,2), line.Substring(9,2), line.Substring(12,2) };

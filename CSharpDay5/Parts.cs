@@ -39,6 +39,29 @@ internal class Parts
         Console.WriteLine("Counts: " + counts.Where(x => x.Value > 1).Count());
     }
 
+    internal void Part2()
+    {
+        var rawCoordinates = input.Select(x => new CoordinateRange(x));
+
+        var counts = new Dictionary<Coordinate, int>();
+        foreach (var plot in rawCoordinates)
+        {
+            foreach (var plot2 in plot.GetPlots())
+            {
+                if (!counts.ContainsKey(plot2))
+                {
+                    counts.Add(plot2, 1);
+                }
+                else
+                {
+                    counts[plot2] = counts[plot2] + 1;
+                }
+            }
+        }
+
+        Console.WriteLine("Counts: " + counts.Where(x => x.Value > 1).Count());
+    }
+
     private readonly struct Coordinate
     {
         public readonly int x;
@@ -80,7 +103,7 @@ internal class Parts
                 return Enumerable.Range(yEnd, (yStart + 1)-yEnd).Select(x => new Coordinate(xStart, x)).ToArray();
 
             }
-            else
+            else if(yStart == yEnd)
             {
                 if (xStart < xEnd)
                 {
@@ -88,6 +111,16 @@ internal class Parts
                 }
 
                 return Enumerable.Range(xEnd, (xStart + 1)-xEnd).Select(x => new Coordinate(x, yStart)).ToArray();
+            }
+            else
+            {
+                //diagonal case
+                var xGoingUp = xStart < xEnd ? true : false;
+                var yGoingUp = yStart < yEnd ? true : false;
+
+                var xPlots = xGoingUp ? Enumerable.Range(xStart, (xEnd + 1)-xStart).ToList() : Enumerable.Range(xEnd, (xStart + 1)-xEnd).Reverse().ToList();
+                var yPlots = yGoingUp ? Enumerable.Range(yStart, (yEnd + 1)-yStart).ToList() : Enumerable.Range(yEnd, (yStart + 1)-yEnd).Reverse().ToList();
+                return xPlots.Select(x => new Coordinate(x, yPlots[xPlots.IndexOf(x)])).ToArray();
             }
         }
     }
